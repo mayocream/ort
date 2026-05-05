@@ -17,7 +17,7 @@ use crate::{
 	error::{Error, ErrorCode, Result},
 	memory::{Allocator, MemoryInfo},
 	ortsys,
-	value::{Value, ValueInner, ValueType}
+	value::{IntoShape, Value, ValueInner, ValueType}
 };
 
 impl Tensor<String> {
@@ -105,7 +105,7 @@ impl<T: PrimitiveTensorElementType + Debug> Tensor<T> {
 	/// # Ok(())
 	/// # }
 	/// ```
-	pub fn new(allocator: &Allocator, shape: impl Into<Shape>) -> Result<Tensor<T>> {
+	pub fn new(allocator: &Allocator, shape: impl IntoShape) -> Result<Tensor<T>> {
 		let tensor = DynTensor::new(allocator, T::into_tensor_element_type(), shape)?;
 		Ok(unsafe { tensor.transmute_type() })
 	}
@@ -317,6 +317,11 @@ pub struct TensorArrayDataParts<I> {
 	pub guard: Option<Box<dyn Any>>
 }
 
+#[diagnostic::on_unimplemented(
+	message = "`{Self}` is not a valid tensor shape definition",
+	note = "slices or `Vec`s of `usize`, `i32`, or `i64` are supported",
+	note = "you may have to explicitly define the type of integer literals (like 42_i64 instead of 42)"
+)]
 pub trait ToShape {
 	fn to_shape(&self, expected_size: Option<usize>) -> Result<Shape>;
 }

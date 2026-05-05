@@ -33,6 +33,7 @@ impl Drop for Attribute {
 	}
 }
 
+#[diagnostic::on_unimplemented(message = "`{Self}` is not a supported operator attribute")]
 pub trait FromKernelAttributes<'s> {
 	/// Reads the value of the attribute from an [`ort_sys::OrtKernelInfo`] given its C name.
 	#[doc(hidden)]
@@ -43,6 +44,7 @@ pub trait FromKernelAttributes<'s> {
 	private_trait!();
 }
 
+#[diagnostic::on_unimplemented(message = "`{Self}` is not a supported operator attribute")]
 pub trait FromOpAttr {
 	#[doc(hidden)]
 	fn attr_type() -> ort_sys::OrtOpAttrType;
@@ -56,6 +58,7 @@ pub trait FromOpAttr {
 	private_trait!();
 }
 
+#[diagnostic::on_unimplemented(message = "`{Self}` is not a supported operator attribute")]
 pub trait ToAttribute {
 	#[doc(hidden)]
 	unsafe fn to_attribute(&self, name: *const ort_sys::c_char) -> Result<NonNull<ort_sys::OrtOpAttr>>

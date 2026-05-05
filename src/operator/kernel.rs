@@ -13,7 +13,7 @@ use crate::{
 	memory::{Allocator, MemoryInfo, MemoryType},
 	ortsys,
 	util::with_cstr,
-	value::{DowncastableTarget, DynValue, Outlet, Shape, Value, ValueRef, ValueRefMut, ValueType}
+	value::{DowncastableTarget, DynValue, IntoShape, Outlet, Value, ValueRef, ValueRefMut, ValueType}
 };
 
 pub trait Kernel {
@@ -195,7 +195,7 @@ impl KernelContext {
 		Ok(NonNull::new(value_ptr.cast_mut()).map(|c| ValueRef::new(unsafe { Value::from_ptr_nodrop(c, None) })))
 	}
 
-	pub fn output(&self, idx: usize, shape: impl Into<Shape>) -> Result<Option<ValueRefMut<'_>>> {
+	pub fn output(&self, idx: usize, shape: impl IntoShape) -> Result<Option<ValueRefMut<'_>>> {
 		let mut value_ptr: *mut ort_sys::OrtValue = ptr::null_mut();
 		let shape = shape.into();
 		ortsys![unsafe KernelContext_GetOutput(self.ptr.as_ptr(), idx, shape.as_ptr(), shape.len(), &mut value_ptr)?];

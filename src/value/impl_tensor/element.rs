@@ -167,6 +167,7 @@ impl From<ort_sys::ONNXTensorElementDataType> for TensorElementType {
 }
 
 /// Trait used to map Rust types (for example `f32`) to ONNX tensor element data types (for example `Float`).
+#[diagnostic::on_unimplemented(message = "`{Self}` is not a supported tensor element type")]
 pub trait IntoTensorElementType {
 	/// Returns the ONNX tensor element data type corresponding to the given Rust type.
 	fn into_tensor_element_type() -> TensorElementType;
@@ -176,6 +177,10 @@ pub trait IntoTensorElementType {
 
 /// A superset of [`IntoTensorElementType`] that represents traits whose underlying memory is identical between Rust and
 /// C++ (i.e., every type except `String`).
+#[diagnostic::on_unimplemented(
+	message = "`{Self}` is not a supported tensor element type here",
+	note = "in this context, only primitive element types (any supported element type except `String`) are allowed"
+)]
 pub trait PrimitiveTensorElementType: IntoTensorElementType {
 	private_trait!();
 }
@@ -229,6 +234,10 @@ impl IntoTensorElementType for String {
 }
 
 /// Adapter for common Rust string types to ONNX strings.
+#[diagnostic::on_unimplemented(
+	message = "`{Self}` is not a supported string tensor element type",
+	note = "supported types are `String`, `&str`, `Cow<str>`, and `Arc<str>`"
+)]
 pub trait Utf8Data {
 	/// Returns the contents of this value as a slice of UTF-8 bytes.
 	fn as_utf8_bytes(&self) -> &[u8];

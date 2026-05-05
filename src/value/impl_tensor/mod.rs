@@ -16,7 +16,7 @@ use core::{
 pub use self::{
 	create::{OwnedTensorArrayData, TensorArrayData, TensorArrayDataMut, TensorArrayDataParts, ToShape},
 	element::{IntoTensorElementType, PrimitiveTensorElementType, TensorElementType, Utf8Data},
-	shape::{Shape, SymbolicDimensions}
+	shape::{IntoShape, Shape, SymbolicDimensions}
 };
 use super::{DowncastableTarget, DynValue, Value, ValueInner, ValueRef, ValueRefMut, ValueType, ValueTypeMarker};
 use crate::{
@@ -103,7 +103,7 @@ impl DynTensor {
 	/// # Ok(())
 	/// # }
 	/// ```
-	pub fn new(allocator: &Allocator, data_type: TensorElementType, shape: impl Into<Shape>) -> Result<DynTensor> {
+	pub fn new(allocator: &Allocator, data_type: TensorElementType, shape: impl IntoShape) -> Result<DynTensor> {
 		Self::new_inner(allocator, data_type, shape.into())
 	}
 

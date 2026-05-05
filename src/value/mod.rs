@@ -37,7 +37,7 @@ pub use self::{
 		DynSequence, DynSequenceRef, DynSequenceRefMut, DynSequenceValueType, Sequence, SequenceRef, SequenceRefMut, SequenceValueType, SequenceValueTypeMarker
 	},
 	impl_tensor::{
-		DefiniteTensorValueTypeMarker, DynTensor, DynTensorRef, DynTensorRefMut, DynTensorValueType, IntoTensorElementType, OwnedTensorArrayData,
+		DefiniteTensorValueTypeMarker, DynTensor, DynTensorRef, DynTensorRefMut, DynTensorValueType, IntoShape, IntoTensorElementType, OwnedTensorArrayData,
 		PrimitiveTensorElementType, Shape, SymbolicDimensions, Tensor, TensorArrayData, TensorArrayDataMut, TensorArrayDataParts, TensorElementType, TensorRef,
 		TensorRefMut, TensorValueType, TensorValueTypeMarker, ToShape, Utf8Data
 	},

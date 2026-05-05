@@ -104,6 +104,15 @@ impl FromIterator<i64> for Shape {
 	}
 }
 
+#[diagnostic::on_unimplemented(
+	message = "`{Self}` is not a valid tensor shape definition",
+	note = "slices or `Vec`s of `usize` or `i64` are supported",
+	note = "you may have to explicitly define the type of integer literals (like 42_i64 instead of 42)"
+)]
+pub trait IntoShape: Into<Shape> {}
+#[diagnostic::do_not_recommend]
+impl<T: Into<Shape>> IntoShape for T {}
+
 impl Deref for Shape {
 	type Target = [i64];
 	fn deref(&self) -> &Self::Target {
